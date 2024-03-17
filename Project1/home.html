@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shady Flowers &#9880;</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        .span1 {
+            content: "\2715";
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="home.html">Shady Flowers &#9880;</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row mt-5 mb-4">
+            <h5 style="color: rgb(0, 97, 0);">
+                Welcome to our charming piece of heaven on earth<br>
+                Here is our most popular selections, for your every occasion
+            </h5>
+        </div>
+        <div class="row">
+            <div class="content row .col-xs-18 .col-md-12" id="flowers">
+
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="row" id="cartDV"
+                style="visibility: hidden; border-style: solid; border-color: rgb(0, 97, 0); border-radius: 25px;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartDV1">
+                    </tbody>
+                </table>
+                <div class="col-3">
+                    <button type="button" class="btn btn-info mb-2" onclick="purchaseButton()">Buy</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+<script>
+    var x = document.getElementById("cartDV");
+
+    var productsArray = [];
+    let flowersArr = [
+        {
+            type: "Long Red Love",
+            price: Number('300'),
+            img: "images/Long_Red_Love.jpg"
+        },
+        {
+            type: "White Fresh Flower",
+            price: Number('250'),
+            img: "images/White_Fresh_Flower.jpg"
+        },
+        {
+            type: "Shadi Bouquets",
+            price: Number('200'),
+            img: "images/Shadi_bouquets.jpg"
+        },
+        {
+            type: "Always On My Mind",
+            price: Number('350'),
+            img: "images/Always_On_My_Mind.jpg"
+        },
+        {
+            type: "Sweet Smile",
+            price: Number('200'),
+            img: "images/Sweet_Smile.jpg"
+        },
+        {
+            type: "In Love with Red Roses",
+            price: Number('200'),
+            img: "images/In_Love_with_Red_Roses.jpg"
+        },
+        {
+            type: "Mothers Love Bouquet",
+            price: Number('400'),
+            img: "images/Mothers_Love_Bouquet.jpg"
+        },
+        {
+            type: "Colors Of The Rainbow",
+            price: Number('400'),
+            img: "images/Colors_Of_The_Rainbow.jpg"
+        },
+    ]
+    function checkProducts() {
+        if (localStorage.products) {
+            productsArray = JSON.parse(localStorage.products);
+            writeToTable()
+        }
+
+    }
+
+
+    function wrtieToHtml() {
+
+        var str = "";
+
+        for (i = 0; i < flowersArr.length; i++) {
+            str += `<div class="col-3 mt-2">`
+            str += `<div class="card" style="width: 16rem;">`
+            str += `<img class="card-img-top" src="${flowersArr[i]['img']}" alt="Card image cap" width="80px" height="200px">`
+            str += `<div class="card-body">`
+            str += `<h6 class="card-title">${flowersArr[i]['type']}</h6>`
+            str += `<p>Price : ${flowersArr[i]['price']}₪</p> `
+            str += `<a class="btn btn-outline-success mt-2" onclick="addSum('${flowersArr[i]['type']}','${flowersArr[i]['price']}')">Add to cart</a>`
+            str += `</div></div></div>`
+        }
+        document.getElementById('flowers').innerHTML = str;
+    }
+    checkProducts()
+
+    wrtieToHtml()
+
+    function addSum(type, price) {
+        x.style.visibility = 'visible';
+
+        var obj = {}
+        obj.name = type
+        obj.price = Number(price)
+
+        productsArray.push(obj)
+        localStorage.products = JSON.stringify(productsArray);
+
+        console.log(productsArray)
+
+        writeToTable()
+    }
+
+    function writeToTable() {
+        if (productsArray.length > 0) {
+            x.style.visibility = 'visible';     // Show
+
+        }
+        var str = ''
+        var total = 0;
+        for (i = 0; i < productsArray.length; i++) {
+            total += productsArray[i]['price'];
+            str +=
+                `<tr>
+                <th scope="row">${i + 1}</th>
+                <td> ${productsArray[i]['name']}</td>
+                <td>${productsArray[i]['price']}</td>  
+                <td>${total}</td>
+                <td><span class="span1" onclick="removeProducts('${productsArray[i]}')">&#10005;</span></td>
+                </tr>
+                `
+        }
+        document.getElementById('cartDV1').innerHTML = str
+    }
+
+    function removeProducts(index) {
+        productsArray.splice(index, 1);
+        localStorage.setItem('products', JSON.stringify(productsArray));
+        writeToTable();
+
+    }
+
+    function purchaseButton() {
+        localStorage.products = JSON.stringify(productsArray);
+        window.location.href = "payment.html"
+    }
+
+    function returnToShop() {
+        window.location.reload()
+    }
+
+
+
+</script>
+
+</html>

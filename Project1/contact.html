@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shady Flowers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        #image {
+            margin: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="home.html">Shady Flowers &#9880;</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-4 mt-5 p-3">
+                <h3 style="color: rgb(0, 97, 0);">Leave us your contact info and we will contact you.</h3>
+
+                <form class="p-3">
+                    <div class="form-group">
+                        <label for="UserName">First Name</label>
+                        <input type="email" class="form-control" id="UserName" aria-describedby="emailHelp"
+                            placeholder="First Name">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="UserLastName">Last Name</label>
+                        <input type="text" class="form-control" id="UserLastName" placeholder="Last Name">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="UserEmail">Email Address</label>
+                        <input type="email" name="email" class="form-control" id="UserEmail"
+                            placeholder="Enter Email Address">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="PhoneNumber">Phone Number</label>
+                        <input type="number" class="form-control" id="PhoneNumber" placeholder="Enter Phone Number"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            type="number" maxlength="10">
+                    </div>
+                    <select class="form-select mt-2" aria-label="Default select example" id="region">
+                        <option selected value="none">In Which District Do You Live?</option>
+                        <option value="North">North</option>
+                        <option value="Jerusalem">Jerusalem</option>
+                        <option value="Haifa">Haifa</option>
+                        <option value="Central">Center</option>
+                        <option value="South ">South </option>
+                    </select>
+                    <input class="form-check-input mt-2" type="checkbox" value="" id="flexCheckDefault"
+                        onclick="valCheckBox()">
+                    <label class="form-check-label mt-1" for="flexCheckDefault">
+                        I agree
+                    </label>
+                    <p id="errorDV" style="font-style: italic; color: red;">
+                    </p>
+
+                    <p id="warning" style="font-style: italic; visibility: hidden; color: red;">
+                        *Please fill all the fields
+                    </p>
+
+
+                    <p id="success" style="font-style: italic; visibility: hidden; color: green;">
+                        *Infromation sent. We will contact you at the soonest time possible
+                    </p>
+
+
+                    <button type="button" class="btn btn-success mt-2" id="btn" onclick="sendContact()">Send</button>
+                </form>
+            </div>
+            <div class="col-3">
+                <input type="image" id="image" src="images/banner01.jpg" width="600px" height="500px" />
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+</body>
+
+<script>
+    var Btn = document.getElementById("btn").disabled = true
+
+    function sendContact() {
+
+        var str = ''
+        var numReg = new RegExp('^[0-9]+$')
+        let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        var x = document.getElementById('warning')
+        var y = document.getElementById('success')
+
+        var name = document.getElementById('UserName').value
+        var lastName = document.getElementById('UserLastName').value
+        var mail = document.getElementById('UserEmail').value
+        var Pnum = document.getElementById('PhoneNumber').value
+        var region = document.getElementById('region').value
+
+        if (name == "" || lastName == "" || mail == "" || Pnum == "" || region == "none") {
+            y.style.visibility = 'hidden'
+
+            x.style.visibility = 'visible'
+        } else if (name.length <= 2) {
+            str = `*Name is too short`
+            document.getElementById('errorDV').innerHTML = str
+            y.style.visibility = 'hidden'
+
+        } else if (numReg.test(name)) {
+            str = `*Name cannot contain numbers`
+            x.style.visibility = 'hidden'
+            document.getElementById('errorDV').innerHTML = str
+        }
+        else if (numReg.test(lastName)) {
+            str = `*Last Name cannot contain numbers`
+            x.style.visibility = 'hidden'
+            document.getElementById('errorDV').innerHTML = str
+        }
+        else if (lastName.length < 2) {
+            str = `*Last Name too short`
+            x.style.visibility = 'hidden'
+            document.getElementById('errorDV').innerHTML = str
+        }
+        else if (!mail.match(emailRegex)) {
+            str = `*Invalid Email Address`
+            x.style.visibility = 'hidden'
+            document.getElementById('errorDV').innerHTML = str
+        }
+        else {
+            str = ''
+            document.getElementById('errorDV').innerHTML = str
+            x.style.visibility = 'hidden'
+            y.style.visibility = 'visible'
+            console.log(region)
+        }
+    }
+
+    function valCheckBox() {
+        var checkBox = document.getElementById("flexCheckDefault");
+        if (checkBox.checked == true) {
+            console.log(checkBox.checked)
+            Btn = document.getElementById("btn").disabled = false
+        } if (checkBox.checked == false) {
+            console.log(checkBox.checked)
+            Btn = document.getElementById("btn").disabled = true
+        }
+
+    }
+</script>
+
+</html>
